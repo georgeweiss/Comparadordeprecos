@@ -115,132 +115,98 @@ cNum.classList.add(“pop”);
 function recalc(){
 var all=wrap.getElementsByClassName(“card”);
 var best=null,bestU=Infinity,i,card,q,p,u,rv;
-
-```
 for(i=0;i<all.length;i++){
-  card=all[i];
-  q=parseFloat(card.getElementsByClassName("iq")[0].value)||0;
-  p=parseFloat(card.getElementsByClassName("ip")[0].value.replace(",","."))||0;
-  rv=card.getElementsByClassName("rv")[0];
-
-  card.classList.remove("winner");
-
-  if(q>0&&p>0){
-    u=p/q;
-    rv.textContent=u.toFixed(4);
-    rv.classList.add("ok");
-    if(u<bestU){bestU=u;best=card;}
-  }else{
-    rv.textContent="-";
-    rv.classList.remove("ok");
-  }
+card=all[i];
+q=parseFloat(card.getElementsByClassName(“iq”)[0].value)||0;
+p=parseFloat(card.getElementsByClassName(“ip”)[0].value.replace(”,”,”.”))||0;
+rv=card.getElementsByClassName(“rv”)[0];
+card.classList.remove(“winner”);
+if(q>0&&p>0){
+u=p/q;
+rv.textContent=u.toFixed(4);
+rv.classList.add(“ok”);
+if(u<bestU){bestU=u;best=card;}
+}else{
+rv.textContent=”-”;
+rv.classList.remove(“ok”);
 }
-
-if(best)best.classList.add("winner");
-```
-
+}
+if(best)best.classList.add(“winner”);
 }
 
 function addCard(){
 total++;
-
-```
-var card=mk("div","card");
-var head=mk("div","card-head");
-
-var lbl=mk("span","card-lbl");
-lbl.textContent="OPCAO "+total;
-
-var badge=mk("span","badge");
-badge.textContent="* MELHOR PRECO";
-
+var card=mk(“div”,“card”);
+var head=mk(“div”,“card-head”);
+var lbl=mk(“span”,“card-lbl”);
+lbl.textContent=“OPCAO “+total;
+var badge=mk(“span”,“badge”);
+badge.textContent=“MELHOR PRECO”;
 head.appendChild(lbl);
 head.appendChild(badge);
-
-var body=mk("div","card-body");
-
-var c1=mk("div","cell");
-var l1=mk("span","cell-lbl");
-l1.textContent="QTD / ML / G";
-
-var i1=mk("input","inp iq");
-i1.type="number";
-i1.placeholder="ex: 500";
-i1.min="0";
-i1.step="any";
-i1.setAttribute("inputmode","decimal");
-i1.addEventListener("input",recalc);
-
+var body=mk(“div”,“card-body”);
+var c1=mk(“div”,“cell”);
+var l1=mk(“span”,“cell-lbl”);
+l1.textContent=“QTD / ML / G”;
+var i1=mk(“input”,“inp iq”);
+i1.type=“number”;
+i1.placeholder=“ex: 500”;
+i1.min=“0”;
+i1.step=“any”;
+i1.setAttribute(“inputmode”,“decimal”);
+i1.addEventListener(“input”,recalc);
 c1.appendChild(l1);
 c1.appendChild(i1);
-
-var c2=mk("div","cell");
-var l2=mk("span","cell-lbl");
-l2.textContent="VALOR R$";
-
-var i2=mk("input","inp ip");
-i2.type="text";
-i2.placeholder="ex: 9,99";
-i2.setAttribute("inputmode","decimal");
-
-i2.addEventListener("input",function(){
-  var val=this.value.replace(",",".");
-  this.value=val;
-  recalc();
+var c2=mk(“div”,“cell”);
+var l2=mk(“span”,“cell-lbl”);
+l2.textContent=“VALOR R$”;
+var i2=mk(“input”,“inp ip”);
+i2.type=“text”;
+i2.placeholder=“ex: 9,99”;
+i2.setAttribute(“inputmode”,“decimal”);
+i2.addEventListener(“input”,function(){
+var val=this.value.replace(”,”,”.”);
+this.value=val;
+recalc();
 });
-
-i2.addEventListener("focus",function(){
-  setTimeout(function(){i2.select();},0);
+i2.addEventListener(“focus”,function(){
+setTimeout(function(){i2.select();},0);
 });
-
 c2.appendChild(l2);
 c2.appendChild(i2);
-
-var c3=mk("div","cell cell-res");
-var l3=mk("span","cell-lbl");
-l3.textContent="R$ / UND";
-
-var box=mk("div","result-box");
-var rv=mk("span","result-val rv");
-rv.textContent="-";
-
+var c3=mk(“div”,“cell cell-res”);
+var l3=mk(“span”,“cell-lbl”);
+l3.textContent=“R$ / UND”;
+var box=mk(“div”,“result-box”);
+var rv=mk(“span”,“result-val rv”);
+rv.textContent=”-”;
 box.appendChild(rv);
 c3.appendChild(l3);
 c3.appendChild(box);
-
 body.appendChild(c1);
 body.appendChild(c2);
 body.appendChild(c3);
-
 card.appendChild(head);
 card.appendChild(body);
-
 wrap.appendChild(card);
 updateCount();
-
 if(total>3){
-  setTimeout(function(){
-    card.scrollIntoView({behavior:"smooth",block:"nearest"});
-  },60);
+setTimeout(function(){
+card.scrollIntoView({behavior:“smooth”,block:“nearest”});
+},60);
 }
-```
-
 }
 
 function clearAll(){
 var inp=wrap.getElementsByClassName(“inp”);
 var rvs=wrap.getElementsByClassName(“rv”);
 var all=wrap.getElementsByClassName(“card”);
-
-```
-for(var i=0;i<inp.length;i++)inp[i].value="";
+for(var i=0;i<inp.length;i++)inp[i].value=””;
 for(var i=0;i<rvs.length;i++){
-  rvs[i].textContent="-";
-  rvs[i].classList.remove("ok");
+rvs[i].textContent=”-”;
+rvs[i].classList.remove(“ok”);
 }
-for(var i=0;i<all.length;i++)all[i].classList.remove("winner");
-```
-
+for(var i=0;i<all.length;i++)all[i].classList.remove(“winner”);
 }
 
 btnAdd.addEventListener(“click”,addCard);
