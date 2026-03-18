@@ -7,7 +7,13 @@
 <title>Comparador de Preços</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+*, *::before, *::after {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+-webkit-tap-highlight-color: transparent;
+}
 
 :root {
 –bg: #000000;
@@ -42,7 +48,9 @@ radial-gradient(ellipse 60% 25% at 85% 85%, rgba(48,209,88,0.04) 0%, transparent
 var(–bg);
 color: var(–t1);
 min-height: 100vh;
+display: -webkit-flex;
 display: flex;
+-webkit-justify-content: center;
 justify-content: center;
 }
 
@@ -50,20 +58,28 @@ justify-content: center;
 width: 100%;
 max-width: 430px;
 min-height: 100vh;
+display: -webkit-flex;
 display: flex;
+-webkit-flex-direction: column;
 flex-direction: column;
 }
 
 .header {
+display: -webkit-flex;
 display: flex;
+-webkit-flex-direction: column;
 flex-direction: column;
+-webkit-align-items: center;
 align-items: center;
 padding: 54px 24px 0;
 }
 
 .title-row {
+display: -webkit-flex;
 display: flex;
+-webkit-align-items: center;
 align-items: center;
+-webkit-justify-content: center;
 justify-content: center;
 gap: 13px;
 width: 100%;
@@ -74,8 +90,10 @@ width: 58px;
 height: 58px;
 border-radius: 14px;
 object-fit: cover;
+-webkit-flex-shrink: 0;
 flex-shrink: 0;
 box-shadow: 0 4px 18px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.08);
+display: block;
 }
 
 .header-title {
@@ -96,7 +114,9 @@ margin-top: 12px;
 }
 
 .count-strip {
+display: -webkit-flex;
 display: flex;
+-webkit-align-items: center;
 align-items: center;
 background: rgba(255,255,255,0.05);
 border: 1px solid var(–border-hi);
@@ -124,7 +144,16 @@ text-align: center;
 box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
-.count-num.pop { animation: numPop .32s cubic-bezier(.34,1.56,.64,1); }
+.count-num.pop {
+-webkit-animation: numPop .32s cubic-bezier(.34,1.56,.64,1);
+animation: numPop .32s cubic-bezier(.34,1.56,.64,1);
+}
+
+@-webkit-keyframes numPop {
+0%   { -webkit-transform: scale(1); }
+45%  { -webkit-transform: scale(1.3); }
+100% { -webkit-transform: scale(1); }
+}
 @keyframes numPop {
 0%   { transform: scale(1); }
 45%  { transform: scale(1.3); }
@@ -135,37 +164,43 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
 width: 100%;
 height: 1px;
 margin-top: 18px;
+background: -webkit-linear-gradient(left, transparent, var(–border-hi) 30%, var(–border-hi) 70%, transparent);
 background: linear-gradient(90deg, transparent, var(–border-hi) 30%, var(–border-hi) 70%, transparent);
 }
 
 .scroll-body {
+-webkit-flex: 1;
 flex: 1;
 padding: 14px 14px 130px;
+display: -webkit-flex;
 display: flex;
+-webkit-flex-direction: column;
 flex-direction: column;
 gap: 12px;
 }
 
-.comparison-item {
+.card {
 background: var(–card);
 border: 1px solid var(–border);
 border-radius: var(–r20);
 overflow: hidden;
 box-shadow: 0 1px 0 rgba(255,255,255,0.055) inset, 0 6px 28px rgba(0,0,0,0.38);
+-webkit-transition: border-color .28s, box-shadow .28s;
 transition: border-color .28s, box-shadow .28s;
-animation: cardIn .26s cubic-bezier(.4,0,.2,1) both;
+-webkit-animation: cardIn .26s ease both;
+animation: cardIn .26s ease both;
 }
 
+@-webkit-keyframes cardIn {
+from { opacity: 0; -webkit-transform: translateY(14px); }
+to   { opacity: 1; -webkit-transform: translateY(0); }
+}
 @keyframes cardIn {
-from { opacity:0; transform:translateY(14px) scale(.97); }
-to   { opacity:1; transform:translateY(0) scale(1); }
+from { opacity: 0; transform: translateY(14px); }
+to   { opacity: 1; transform: translateY(0); }
 }
 
-.comparison-item:nth-child(1) { animation-delay: .04s; }
-.comparison-item:nth-child(2) { animation-delay: .10s; }
-.comparison-item:nth-child(3) { animation-delay: .16s; }
-
-.comparison-item.best-value {
+.card.winner {
 border-color: var(–green-bdr);
 box-shadow:
 0 0 0 1px rgba(48,209,88,0.16),
@@ -175,27 +210,32 @@ box-shadow:
 }
 
 .card-head {
+display: -webkit-flex;
 display: flex;
+-webkit-align-items: center;
 align-items: center;
+-webkit-justify-content: space-between;
 justify-content: space-between;
 padding: 11px 16px 10px;
 background: rgba(255,255,255,0.02);
 border-bottom: 1px solid var(–sep);
 }
 
-.card-num {
+.card-label {
 font-size: 10px;
 font-weight: 700;
 letter-spacing: 0.12em;
 text-transform: uppercase;
 color: var(–t3);
+-webkit-transition: color .22s;
 transition: color .22s;
 }
 
-.best-value .card-num { color: var(–green); }
+.card.winner .card-label { color: var(–green); }
 
-.best-tag {
+.badge {
 display: none;
+-webkit-align-items: center;
 align-items: center;
 gap: 5px;
 background: var(–green-dim);
@@ -209,53 +249,67 @@ padding: 4px 11px;
 border-radius: 20px;
 }
 
-.best-value .best-tag { display: flex; }
+.card.winner .badge { display: -webkit-flex; display: flex; }
 
 .card-body {
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
+display: -webkit-flex;
+display: flex;
 }
 
 .cell {
+-webkit-flex: 1;
+flex: 1;
 padding: 12px 11px 14px;
+display: -webkit-flex;
 display: flex;
+-webkit-flex-direction: column;
 flex-direction: column;
 gap: 8px;
 border-right: 1px solid var(–sep);
+min-width: 0;
 }
 
 .cell:last-child { border-right: none; }
 
-.cell-result {
+.cell-res {
 background: rgba(0,0,0,0.22);
-align-items: center;
-justify-content: center;
 }
 
 .cell-label {
-font-size: 9.5px;
+font-size: 9px;
 font-weight: 700;
 letter-spacing: 0.1em;
 text-transform: uppercase;
 color: var(–t3);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .inp {
 background: var(–input-bg);
 border: 1.5px solid rgba(255,255,255,0.09);
 border-radius: var(–r10);
-padding: 11px 6px;
-font-size: 16px;
+padding: 11px 4px;
+font-size: 15px;
 font-weight: 600;
-font-family: ‘Sora’, sans-serif;
+font-family: ‘Sora’, -apple-system, sans-serif;
 color: var(–t1);
 text-align: center;
 width: 100%;
 -webkit-appearance: none;
-caret-color: var(–blue);
-transition: border-color .15s, box-shadow .15s, background .15s;
+appearance: none;
+-webkit-transition: border-color .15s, box-shadow .15s;
+transition: border-color .15s, box-shadow .15s;
 }
 
+.inp::-webkit-outer-spin-button,
+.inp::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.inp[type=number] { -moz-appearance: textfield; }
+
+.inp::-webkit-input-placeholder { color: var(–t3); font-weight: 400; }
+.inp::-moz-placeholder { color: var(–t3); font-weight: 400; }
 .inp::placeholder { color: var(–t3); font-weight: 400; }
 
 .inp:focus {
@@ -265,9 +319,6 @@ background: rgba(10,132,255,0.07);
 box-shadow: 0 0 0 3px rgba(10,132,255,0.12);
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-
 .result-box {
 width: 100%;
 background: rgba(255,255,255,0.035);
@@ -275,28 +326,31 @@ border: 1.5px solid rgba(255,255,255,0.07);
 border-radius: var(–r10);
 padding: 11px 4px;
 text-align: center;
+-webkit-transition: background .25s, border-color .25s, box-shadow .25s;
 transition: background .25s, border-color .25s, box-shadow .25s;
 }
 
-.best-value .result-box {
+.card.winner .result-box {
 background: var(–green-dim);
 border-color: rgba(48,209,88,0.22);
 box-shadow: 0 0 14px rgba(48,209,88,0.1);
 }
 
-.result-num {
-font-size: 15px;
+.result-val {
+font-size: 14px;
 font-weight: 700;
 color: var(–t3);
 line-height: 1;
 display: block;
-transition: color .25s, transform .25s cubic-bezier(.34,1.56,.64,1);
+-webkit-transition: color .25s, -webkit-transform .25s;
+transition: color .25s, transform .25s;
 }
 
-.result-num.has-val { color: var(–t2); }
+.result-val.has-val { color: var(–t2); }
 
-.best-value .result-num {
+.card.winner .result-val {
 color: var(–green);
+-webkit-transform: scale(1.1);
 transform: scale(1.1);
 text-shadow: 0 0 16px var(–green-glow);
 }
@@ -305,20 +359,21 @@ text-shadow: 0 0 16px var(–green-glow);
 position: fixed;
 bottom: 0;
 left: 50%;
+-webkit-transform: translateX(-50%);
 transform: translateX(-50%);
 width: 100%;
 max-width: 430px;
 z-index: 99;
-padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+padding: 12px 14px 26px;
 background: rgba(8,8,10,0.92);
-backdrop-filter: blur(32px) saturate(180%);
--webkit-backdrop-filter: blur(32px) saturate(180%);
+-webkit-backdrop-filter: blur(32px);
+backdrop-filter: blur(32px);
 border-top: 1px solid var(–border);
 }
 
 .btn-row {
-display: grid;
-grid-template-columns: 1.7fr 1fr;
+display: -webkit-flex;
+display: flex;
 gap: 10px;
 }
 
@@ -328,35 +383,48 @@ border-radius: var(–r14);
 padding: 15px 14px;
 font-size: 15px;
 font-weight: 700;
-font-family: ‘Sora’, sans-serif;
+font-family: ‘Sora’, -apple-system, sans-serif;
 cursor: pointer;
+display: -webkit-flex;
 display: flex;
+-webkit-align-items: center;
 align-items: center;
+-webkit-justify-content: center;
 justify-content: center;
 gap: 7px;
-transition: all .14s ease;
+-webkit-transition: opacity .14s;
+transition: opacity .14s;
 }
 
-.btn:active { transform: scale(0.96); }
-.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn:active { opacity: 0.75; }
+
+.btn svg {
+width: 16px;
+height: 16px;
+-webkit-flex-shrink: 0;
+flex-shrink: 0;
+}
 
 .btn-add {
+-webkit-flex: 1;
+flex: 1;
 background: var(–blue);
 color: #fff;
-box-shadow: 0 4px 20px var(–blue-glow), inset 0 1px 0 rgba(255,255,255,0.18);
+box-shadow: 0 4px 20px var(–blue-glow);
 }
 
 .btn-clear {
 background: var(–red-dim);
 color: var(–red);
 border: 1px solid rgba(255,69,58,0.2);
+padding: 15px 20px;
 }
-</style>
 
+</style>
 </head>
 <body>
-<div class="app">
 
+<div class="app">
   <div class="header">
     <div class="title-row">
       <img class="brand-logo" src="logo.jpg" alt="Logo">
@@ -365,194 +433,190 @@ border: 1px solid rgba(255,69,58,0.2);
     <div class="header-sub">Melhor custo por unidade</div>
     <div class="count-strip">
       <span class="count-segment">Comparando</span>
-      <span class="count-num" id="count-num">3</span>
-      <span class="count-segment" id="count-label">itens</span>
+      <span class="count-num" id="countNum">3</span>
+      <span class="count-segment" id="countLbl">itens</span>
     </div>
     <div class="divider"></div>
   </div>
-
-  <div class="scroll-body" id="comparisons"></div>
-
+  <div class="scroll-body" id="cards"></div>
   <div class="bottom-bar">
     <div class="btn-row">
-      <button class="btn btn-add" id="btn-add">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+      <button class="btn btn-add" id="btnAdd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
         Adicionar item
       </button>
-      <button class="btn btn-clear" id="btn-clear">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <button class="btn btn-clear" id="btnClear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"></path>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
           <path d="M9 6V4h6v2"></path>
         </svg>
         Limpar
       </button>
     </div>
   </div>
-
 </div>
+
 <script>
-var wrap     = document.getElementById('comparisons');
-var addBtn   = document.getElementById('btn-add');
-var clrBtn   = document.getElementById('btn-clear');
-var countNum = document.getElementById('count-num');
-var countLbl = document.getElementById('count-label');
-var total = 0;
 
-function refreshCount() {
-var c = wrap.children.length;
-countNum.textContent = c;
-countLbl.textContent = c === 1 ? ‘item’ : ‘itens’;
-countNum.classList.remove(‘pop’);
-void countNum.offsetWidth;
-countNum.classList.add(‘pop’);
-}
+(function() {
+  var cards   = document.getElementById('cards');
+  var btnAdd  = document.getElementById('btnAdd');
+  var btnClr  = document.getElementById('btnClear');
+  var numEl   = document.getElementById('countNum');
+  var lblEl   = document.getElementById('countLbl');
+  var n = 0;
 
-function makeCard(n) {
-var item = document.createElement(‘div’);
-item.className = ‘comparison-item’;
+  function el(tag, cls) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    return e;
+  }
 
-var head = document.createElement(‘div’);
-head.className = ‘card-head’;
+  function setText(e, t) { e.textContent = t; }
 
-var lbl = document.createElement(‘span’);
-lbl.className = ‘card-num’;
-lbl.textContent = ’Op\u00E7\u00E3o ’ + n;
+  function updateCount() {
+    var c = cards.children.length;
+    setText(numEl, c);
+    setText(lblEl, c === 1 ? 'item' : 'itens');
+    numEl.classList.remove('pop');
+    numEl.offsetWidth; // reflow
+    numEl.classList.add('pop');
+  }
 
-var tag = document.createElement(‘span’);
-tag.className = ‘best-tag’;
-tag.textContent = ‘\u2605 Melhor Pre\u00E7o’;
+  function recalc() {
+    var allCards = cards.getElementsByClassName('card');
+    var best = null;
+    var bestU = Infinity;
+    var i, card, q, p, u, valEl;
 
-head.appendChild(lbl);
-head.appendChild(tag);
+    for (i = 0; i < allCards.length; i++) {
+      card  = allCards[i];
+      q     = parseFloat(card.getElementsByClassName('inp-qty')[0].value) || 0;
+      p     = parseFloat(card.getElementsByClassName('inp-prc')[0].value) || 0;
+      valEl = card.getElementsByClassName('result-val')[0];
 
-var body = document.createElement(‘div’);
-body.className = ‘card-body’;
+      card.classList.remove('winner');
 
-var cellQty = document.createElement(‘div’);
-cellQty.className = ‘cell’;
-var lblQty = document.createElement(‘span’);
-lblQty.className = ‘cell-label’;
-lblQty.textContent = ‘Qtd / ml / g’;
-var inputQty = document.createElement(‘input’);
-inputQty.className = ‘inp qty’;
-inputQty.type = ‘number’;
-inputQty.placeholder = ‘ex: 500’;
-inputQty.min = ‘0’;
-inputQty.step = ‘any’;
-inputQty.setAttribute(‘inputmode’, ‘decimal’);
-cellQty.appendChild(lblQty);
-cellQty.appendChild(inputQty);
+      if (q > 0 && p > 0) {
+        u = p / q;
+        setText(valEl, u.toFixed(4));
+        valEl.classList.add('has-val');
+        if (u < bestU) { bestU = u; best = card; }
+      } else {
+        setText(valEl, '\u2014');
+        valEl.classList.remove('has-val');
+      }
+    }
 
-var cellPrc = document.createElement(‘div’);
-cellPrc.className = ‘cell’;
-var lblPrc = document.createElement(‘span’);
-lblPrc.className = ‘cell-label’;
-lblPrc.textContent = ‘Valor R$’;
-var inputPrc = document.createElement(‘input’);
-inputPrc.className = ‘inp prc’;
-inputPrc.type = ‘text’;
-inputPrc.placeholder = ‘ex: 9,99’;
-inputPrc.setAttribute(‘inputmode’, ‘decimal’);
-cellPrc.appendChild(lblPrc);
-cellPrc.appendChild(inputPrc);
+    if (best) best.classList.add('winner');
+  }
 
-var cellRes = document.createElement(‘div’);
-cellRes.className = ‘cell cell-result’;
-var lblRes = document.createElement(‘span’);
-lblRes.className = ‘cell-label’;
-lblRes.textContent = ‘R$ / Und’;
-var box = document.createElement(‘div’);
-box.className = ‘result-box’;
-var num = document.createElement(‘span’);
-num.className = ‘result-num’;
-num.textContent = ‘\u2014’;
-box.appendChild(num);
-cellRes.appendChild(lblRes);
-cellRes.appendChild(box);
+  function addCard() {
+    n++;
 
-body.appendChild(cellQty);
-body.appendChild(cellPrc);
-body.appendChild(cellRes);
+    var card = el('div', 'card');
 
-item.appendChild(head);
-item.appendChild(body);
+    // Head
+    var head = el('div', 'card-head');
+    var lbl  = el('span', 'card-label');
+    setText(lbl, 'Op\u00E7\u00E3o ' + n);
+    var badge = el('span', 'badge');
+    setText(badge, '\u2605 Melhor Pre\u00E7o');
+    head.appendChild(lbl);
+    head.appendChild(badge);
 
-inputQty.addEventListener(‘input’, recalc);
+    // Body
+    var body = el('div', 'card-body');
 
-inputPrc.addEventListener(‘input’, function() {
-var digits = inputPrc.value.replace(/\D/g, ‘’);
-var val = (parseInt(digits, 10) || 0) / 100;
-inputPrc.value = val.toFixed(2);
-recalc();
-});
+    // Cell Qty
+    var cQty = el('div', 'cell');
+    var lQty = el('span', 'cell-label');
+    setText(lQty, 'Qtd / ml / g');
+    var iQty = el('input', 'inp inp-qty');
+    iQty.type = 'number';
+    iQty.placeholder = 'ex: 500';
+    iQty.min = '0';
+    iQty.step = 'any';
+    iQty.setAttribute('inputmode', 'decimal');
+    iQty.addEventListener('input', recalc);
+    cQty.appendChild(lQty);
+    cQty.appendChild(iQty);
 
-inputPrc.addEventListener(‘focus’, function() {
-setTimeout(function() { inputPrc.select(); }, 0);
-});
+    // Cell Price
+    var cPrc = el('div', 'cell');
+    var lPrc = el('span', 'cell-label');
+    setText(lPrc, 'Valor R$');
+    var iPrc = el('input', 'inp inp-prc');
+    iPrc.type = 'text';
+    iPrc.placeholder = 'ex: 9,99';
+    iPrc.setAttribute('inputmode', 'decimal');
+    iPrc.addEventListener('input', function() {
+      var raw = iPrc.value.replace(/[^0-9]/g, '');
+      var num = parseInt(raw, 10) || 0;
+      iPrc.value = (num / 100).toFixed(2);
+      recalc();
+    });
+    iPrc.addEventListener('focus', function() {
+      var self = iPrc;
+      setTimeout(function() { self.select(); }, 0);
+    });
+    cPrc.appendChild(lPrc);
+    cPrc.appendChild(iPrc);
 
-return item;
-}
+    // Cell Result
+    var cRes = el('div', 'cell cell-res');
+    var lRes = el('span', 'cell-label');
+    setText(lRes, 'R$ / Und');
+    var box  = el('div', 'result-box');
+    var val  = el('span', 'result-val');
+    setText(val, '\u2014');
+    box.appendChild(val);
+    cRes.appendChild(lRes);
+    cRes.appendChild(box);
 
-function recalc() {
-var items = wrap.querySelectorAll(’.comparison-item’);
-var valid = [];
+    body.appendChild(cQty);
+    body.appendChild(cPrc);
+    body.appendChild(cRes);
 
-items.forEach(function(item) {
-var q = parseFloat(item.querySelector(’.qty’).value) || 0;
-var p = parseFloat(item.querySelector(’.prc’).value) || 0;
-var num = item.querySelector(’.result-num’);
-item.classList.remove(‘best-value’);
-if (q > 0 && p > 0) {
-var u = p / q;
-num.textContent = u.toFixed(4);
-num.classList.add(‘has-val’);
-valid.push({ item: item, u: u });
-} else {
-num.textContent = ‘\u2014’;
-num.classList.remove(‘has-val’);
-}
-});
+    card.appendChild(head);
+    card.appendChild(body);
+    cards.appendChild(card);
+    updateCount();
 
-if (valid.length > 0) {
-valid.sort(function(a, b) { return a.u - b.u; });
-valid[0].item.classList.add(‘best-value’);
-}
-}
+    if (n > 3) {
+      setTimeout(function() {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 60);
+    }
+  }
 
-function addItem() {
-total++;
-var card = makeCard(total);
-if (total > 3) card.style.animationDelay = ‘0s’;
-wrap.appendChild(card);
-refreshCount();
-if (total > 3) {
-setTimeout(function() {
-card.scrollIntoView({ behavior: ‘smooth’, block: ‘nearest’ });
-}, 60);
-}
-}
+  function clearAll() {
+    var inputs = cards.getElementsByClassName('inp');
+    var i;
+    for (i = 0; i < inputs.length; i++) { inputs[i].value = ''; }
+    var vals = cards.getElementsByClassName('result-val');
+    for (i = 0; i < vals.length; i++) {
+      setText(vals[i], '\u2014');
+      vals[i].classList.remove('has-val');
+    }
+    var allCards = cards.getElementsByClassName('card');
+    for (i = 0; i < allCards.length; i++) {
+      allCards[i].classList.remove('winner');
+    }
+  }
 
-function clearAll() {
-wrap.querySelectorAll(’.inp’).forEach(function(el) { el.value = ‘’; });
-wrap.querySelectorAll(’.result-num’).forEach(function(el) {
-el.textContent = ‘\u2014’;
-el.classList.remove(‘has-val’);
-});
-wrap.querySelectorAll(’.comparison-item’).forEach(function(el) {
-el.classList.remove(‘best-value’);
-});
-}
+  btnAdd.addEventListener('click', addCard);
+  btnClr.addEventListener('click', clearAll);
 
-addBtn.addEventListener(‘click’, addItem);
-clrBtn.addEventListener(‘click’, clearAll);
+  addCard();
+  addCard();
+  addCard();
+})();
 
-addItem();
-addItem();
-addItem();
 </script>
 
 </body>
