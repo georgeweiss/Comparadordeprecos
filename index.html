@@ -1,144 +1,255 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comparador de Preços</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Comparador de Precos</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: white;
-  text-align: center;
-}
-
-.container {
-  max-width: 400px;
-  margin: auto;
-}
-
-.card {
-  background: #1c1c1e;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: none;
-  text-align: center;
-}
-
-.result {
-  font-weight: bold;
-}
-
-.winner {
-  border: 2px solid #30d158;
-}
-
-button {
-  padding: 15px;
-  margin: 10px 5px;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.add {
-  background: #0a84ff;
-  color: white;
-}
-
-.clear {
-  background: red;
-  color: white;
-}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:#000!important;min-height:100vh}
+body{font-family:Sora,-apple-system,sans-serif;background:#000;color:#f5f5f7;min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column}
+.header{display:flex;flex-direction:column;align-items:center;padding:52px 20px 0}
+.title-row{display:flex;align-items:center;justify-content:center;gap:14px;width:100%}
+.brand-logo{width:58px;height:58px;border-radius:14px;object-fit:cover;flex-shrink:0;display:block}
+.header-title{font-size:30px;font-weight:800;letter-spacing:-0.5px;line-height:1.1;color:#f5f5f7;white-space:nowrap}
+.header-sub{font-size:13px;color:rgba(255,255,255,0.45);text-align:center;margin-top:10px}
+.pill{display:flex;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);border-radius:100px;overflow:hidden;margin-top:18px}
+.pill-txt{padding:8px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.5)}
+.pill-num{padding:7px 16px;font-size:13px;font-weight:800;color:#fff;background:#0a84ff;min-width:38px;text-align:center}
+.pill-num.pop{animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.35)}100%{transform:scale(1)}}
+.divider{width:calc(100% - 28px);height:1px;margin-top:20px;background:rgba(255,255,255,0.08)}
+.scroll-body{flex:1;padding:14px 14px 130px;display:flex;flex-direction:column;gap:12px}
+.card{background:#1c1c1e;border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.5);transition:border-color .28s,box-shadow .28s;animation:cin .3s ease both}
+@keyframes cin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card:nth-child(1){animation-delay:.04s}
+.card:nth-child(2){animation-delay:.10s}
+.card:nth-child(3){animation-delay:.16s}
+.card.winner{border-color:rgba(48,209,88,0.45);box-shadow:0 0 0 1px rgba(48,209,88,0.15),0 4px 24px rgba(48,209,88,0.1)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px 10px;background:rgba(255,255,255,0.025);border-bottom:1px solid rgba(255,255,255,0.06)}
+.card-lbl{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);transition:color .22s}
+.card.winner .card-lbl{color:#30d158}
+.badge{display:none;align-items:center;gap:4px;background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.28);color:#30d158;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.card.winner .badge{display:flex}
+.card-body{display:flex}
+.cell{flex:1;padding:13px 10px 15px;display:flex;flex-direction:column;gap:8px;border-right:1px solid rgba(255,255,255,0.06);min-width:0}
+.cell:last-child{border-right:none}
+.cell-res{background:rgba(10,132,255,0.05)}
+.card.winner .cell-res{background:rgba(48,209,88,0.05)}
+.cell-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+.inp{background:#111;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 6px;font-size:16px;font-weight:600;font-family:Sora,-apple-system,sans-serif;color:#f5f5f7;text-align:center;width:100%;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.inp::-webkit-outer-spin-button,.inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.inp[type=number]{-moz-appearance:textfield}
+.inp::placeholder{color:rgba(255,255,255,0.2);font-weight:400;font-size:14px}
+.inp:focus{outline:none;border-color:rgba(10,132,255,0.6);background:rgba(10,132,255,0.08);box-shadow:0 0 0 3px rgba(10,132,255,0.14)}
+.result-box{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 4px;text-align:center;transition:background .25s,border-color .25s}
+.card.winner .result-box{background:rgba(48,209,88,0.1);border-color:rgba(48,209,88,0.3);box-shadow:0 0 14px rgba(48,209,88,0.1)}
+.result-val{font-size:14px;font-weight:700;color:rgba(255,255,255,0.25);line-height:1;display:block;transition:color .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.result-val.ok{color:rgba(255,255,255,0.6)}
+.card.winner .result-val{color:#30d158;transform:scale(1.1);text-shadow:0 0 16px rgba(48,209,88,0.45)}
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:99;padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px));background:rgba(0,0,0,0.88);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:1px solid rgba(255,255,255,0.08)}
+.btn-row{display:flex;gap:10px}
+.btn{border:none;border-radius:14px;padding:15px 14px;font-size:15px;font-weight:700;font-family:Sora,-apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .14s,transform .14s}
+.btn:active{opacity:0.75;transform:scale(0.97)}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn-add{flex:1;background:#0a84ff;color:#fff;box-shadow:0 4px 18px rgba(10,132,255,0.35)}
+.btn-clear{background:rgba(255,69,58,0.13);color:#ff453a;border:1px solid rgba(255,69,58,0.22);padding:15px 20px}
 </style>
 </head>
-
 <body>
-
-<div class="container">
-  <h2>Comparador de Preços</h2>
-  <p>Melhor custo por unidade</p>
-
-  <div id="cards"></div>
-
-  <button class="add" onclick="addCard()">+ Adicionar</button>
-  <button class="clear" onclick="clearAll()">Limpar</button>
+<div class="app">
+  <div class="header">
+    <div class="title-row">
+      <img class="brand-logo" src="logo.jpg" alt="">
+      <span class="header-title">Comparador<br>de Pre&ccedil;os</span>
+    </div>
+    <div class="header-sub">Melhor custo por unidade</div>
+    <div class="pill">
+      <span class="pill-txt">Comparando</span>
+      <span class="pill-num" id="cNum">3</span>
+      <span class="pill-txt" id="cLbl">itens</span>
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="scroll-body" id="cards"></div>
+  <div class="bottom-bar">
+    <div class="btn-row">
+      <button class="btn btn-add" id="btnAdd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Adicionar item
+      </button>
+      <button class="btn btn-clear" id="btnClear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M9 6V4h6v2"></path></svg>
+        Limpar
+      </button>
+    </div>
+  </div>
 </div>
-
 <script>
-let total = 0;
+(function(){
+  var wrap=document.getElementById("cards");
+  var cNum=document.getElementById("cNum");
+  var cLbl=document.getElementById("cLbl");
+  var btnAdd=document.getElementById("btnAdd");
+  var btnClr=document.getElementById("btnClear");
+  var total=0;
 
-function addCard() {
-  total++;
-
-  const card = document.createElement("div");
-  card.className = "card";
-
-  card.innerHTML = `
-    <h4>Opção ${total}</h4>
-
-    <input type="number" placeholder="Quantidade" class="qtd">
-
-    <input type="number" placeholder="Preço (R$)" step="0.01" class="preco">
-
-    <div class="result">-</div>
-  `;
-
-  const inputs = card.querySelectorAll("input");
-  inputs.forEach(input => input.addEventListener("input", recalc));
-
-  document.getElementById("cards").appendChild(card);
+function mk(tag,cls){
+var e=document.createElement(tag);
+if(cls)e.className=cls;
+return e;
 }
 
-function recalc() {
-  const cards = document.querySelectorAll(".card");
-
-  let best = null;
-  let bestValue = Infinity;
-
-  cards.forEach(card => {
-    const qtd = parseFloat(card.querySelector(".qtd").value);
-    const preco = parseFloat(card.querySelector(".preco").value);
-    const result = card.querySelector(".result");
-
-    card.classList.remove("winner");
-
-    if (qtd > 0 && preco > 0) {
-      const unit = preco / qtd;
-      result.innerText = "R$ " + unit.toFixed(4);
-
-      if (unit < bestValue) {
-        bestValue = unit;
-        best = card;
-      }
-    } else {
-      result.innerText = "-";
-    }
-  });
-
-  if (best) best.classList.add("winner");
+function updateCount(){
+var c=wrap.children.length;
+cNum.textContent=””+c;
+cLbl.textContent=c===1?“item”:“itens”;
+cNum.classList.remove(“pop”);
+void cNum.offsetWidth;
+cNum.classList.add(“pop”);
 }
 
-function clearAll() {
-  document.getElementById("cards").innerHTML = "";
-  total = 0;
+function recalc(){
+var all=wrap.getElementsByClassName(“card”);
+var best=null,bestU=Infinity,i,card,q,p,u,rv;
+
+```
+for(i=0;i<all.length;i++){
+  card=all[i];
+  q=parseFloat(card.getElementsByClassName("iq")[0].value)||0;
+  p=parseFloat(card.getElementsByClassName("ip")[0].value.replace(",","."))||0;
+  rv=card.getElementsByClassName("rv")[0];
+
+  card.classList.remove("winner");
+
+  if(q>0&&p>0){
+    u=p/q;
+    rv.textContent=u.toFixed(4);
+    rv.classList.add("ok");
+    if(u<bestU){bestU=u;best=card;}
+  }else{
+    rv.textContent="-";
+    rv.classList.remove("ok");
+  }
 }
 
-// inicia com 3
+if(best)best.classList.add("winner");
+```
+
+}
+
+function addCard(){
+total++;
+
+```
+var card=mk("div","card");
+var head=mk("div","card-head");
+
+var lbl=mk("span","card-lbl");
+lbl.textContent="OPCAO "+total;
+
+var badge=mk("span","badge");
+badge.textContent="* MELHOR PRECO";
+
+head.appendChild(lbl);
+head.appendChild(badge);
+
+var body=mk("div","card-body");
+
+var c1=mk("div","cell");
+var l1=mk("span","cell-lbl");
+l1.textContent="QTD / ML / G";
+
+var i1=mk("input","inp iq");
+i1.type="number";
+i1.placeholder="ex: 500";
+i1.min="0";
+i1.step="any";
+i1.setAttribute("inputmode","decimal");
+i1.addEventListener("input",recalc);
+
+c1.appendChild(l1);
+c1.appendChild(i1);
+
+var c2=mk("div","cell");
+var l2=mk("span","cell-lbl");
+l2.textContent="VALOR R$";
+
+var i2=mk("input","inp ip");
+i2.type="text";
+i2.placeholder="ex: 9,99";
+i2.setAttribute("inputmode","decimal");
+
+i2.addEventListener("input",function(){
+  var val=this.value.replace(",",".");
+  this.value=val;
+  recalc();
+});
+
+i2.addEventListener("focus",function(){
+  setTimeout(function(){i2.select();},0);
+});
+
+c2.appendChild(l2);
+c2.appendChild(i2);
+
+var c3=mk("div","cell cell-res");
+var l3=mk("span","cell-lbl");
+l3.textContent="R$ / UND";
+
+var box=mk("div","result-box");
+var rv=mk("span","result-val rv");
+rv.textContent="-";
+
+box.appendChild(rv);
+c3.appendChild(l3);
+c3.appendChild(box);
+
+body.appendChild(c1);
+body.appendChild(c2);
+body.appendChild(c3);
+
+card.appendChild(head);
+card.appendChild(body);
+
+wrap.appendChild(card);
+updateCount();
+
+if(total>3){
+  setTimeout(function(){
+    card.scrollIntoView({behavior:"smooth",block:"nearest"});
+  },60);
+}
+```
+
+}
+
+function clearAll(){
+var inp=wrap.getElementsByClassName(“inp”);
+var rvs=wrap.getElementsByClassName(“rv”);
+var all=wrap.getElementsByClassName(“card”);
+
+```
+for(var i=0;i<inp.length;i++)inp[i].value="";
+for(var i=0;i<rvs.length;i++){
+  rvs[i].textContent="-";
+  rvs[i].classList.remove("ok");
+}
+for(var i=0;i<all.length;i++)all[i].classList.remove("winner");
+```
+
+}
+
+btnAdd.addEventListener(“click”,addCard);
+btnClr.addEventListener(“click”,clearAll);
+
 addCard();
 addCard();
 addCard();
+})();
 </script>
 
 </body>
