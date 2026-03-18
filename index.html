@@ -2,505 +2,567 @@
 
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Comparador de Preços</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after {
-  margin: 0; padding: 0; box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparador de Preços</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+```
 :root {
-–bg:         #000000;
-–card:       #1c1c1e;
-–input-bg:   #0a0a0a;
-–border:     rgba(255,255,255,0.09);
-–border-hi:  rgba(255,255,255,0.15);
-–sep:        rgba(255,255,255,0.06);
-–t1:         #f5f5f7;
-–t2:         #aeaeb2;
-–t3:         #48484a;
-–blue:       #0a84ff;
-–blue-glow:  rgba(10,132,255,0.3);
-–green:      #30d158;
-–green-dim:  rgba(48,209,88,0.11);
-–green-bdr:  rgba(48,209,88,0.28);
-–green-glow: rgba(48,209,88,0.22);
-–red:        #ff453a;
-–red-dim:    rgba(255,69,58,0.12);
-–r20: 20px;
-–r14: 14px;
-–r10: 10px;
+  --bg: #000000;
+  --card: #1c1c1e;
+  --card-border: rgba(255,255,255,0.09);
+  --blue: #0a84ff;
+  --green: #30d158;
+  --red: #ff453a;
+  --text: #ffffff;
+  --text-secondary: rgba(255,255,255,0.45);
+  --text-tertiary: rgba(255,255,255,0.22);
+  --input-bg: #0a0a0a;
+  --result-bg: rgba(10,132,255,0.06);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --ease: cubic-bezier(.25,.46,.45,.94);
 }
 
-html { background: var(–bg); }
+html { scroll-behavior: smooth; }
 
 body {
-font-family: ‘Sora’, -apple-system, sans-serif;
-background:
-radial-gradient(ellipse 90% 30% at 50% 0%,  rgba(10,132,255,0.08) 0%, transparent 60%),
-radial-gradient(ellipse 60% 25% at 85% 85%, rgba(48,209,88,0.04)  0%, transparent 50%),
-var(–bg);
-color: var(–t1);
-min-height: 100vh;
-display: flex;
-justify-content: center;
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 120px;
+  -webkit-font-smoothing: antialiased;
 }
 
-.app {
-width: 100%; max-width: 430px;
-min-height: 100vh;
-display: flex; flex-direction: column;
+/* Radial blue glow at top */
+body::before {
+  content: '';
+  position: fixed;
+  top: -180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(10,132,255,0.13) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ══════════════════════════════
-HEADER — 3 blocos independentes
-══════════════════════════════ */
-.header {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 54px 24px 0;
+/* ── HEADER ── */
+header {
+  position: relative;
+  z-index: 1;
+  padding: 52px 20px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-/* BLOCO 1 — logo + título centralizados juntos */
-.title-row {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 13px;
-width: 100%;
+.header-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 10px;
 }
 
-.brand-logo {
-width: 58px; height: 58px;
-border-radius: 14px;
-object-fit: cover;
-flex-shrink: 0;
-box-shadow:
-0 4px 18px rgba(0,0,0,0.65),
-0 0 0 1px rgba(255,255,255,0.08);
-display: block;
-}
-
-/* fallback se logo.jpg não carregar */
-.brand-logo[src=“logo.jpg”]:not([complete]),
-.brand-logo-err {
-display: none;
+.header-logo-row img {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .header-title {
-font-size: 30px; font-weight: 800;
-letter-spacing: -1px; line-height: 1.1;
-color: var(–t1);
-white-space: nowrap;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: var(--text);
 }
 
-/* BLOCO 2 — subtítulo independente, centralizado */
-.header-sub {
-font-size: 13px; font-weight: 400;
-color: var(–t2);
-text-align: center;
-letter-spacing: 0.01em;
-margin-top: 12px;
+.header-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  margin-bottom: 20px;
 }
 
-/* BLOCO 3 — count pill */
-.count-strip {
-display: flex;
-align-items: center;
-background: rgba(255,255,255,0.05);
-border: 1px solid var(–border-hi);
-border-radius: 14px;
-overflow: hidden;
-margin-top: 16px;
+/* Pill segmentado */
+.pill-counter {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+  user-select: none;
 }
 
-.count-segment {
-padding: 8px 15px;
-font-size: 12px; font-weight: 600;
-color: var(–t2);
-letter-spacing: 0.02em;
-white-space: nowrap;
+.pill-counter .pill-count {
+  color: var(--blue);
+  font-weight: 700;
+  margin: 0 6px;
+  display: inline-block;
+  transform-origin: center;
+  transition: transform 0.45s var(--spring), color 0.2s;
 }
 
-.count-segment + .count-segment {
-border-left: 1px solid var(–border);
+.pill-counter .pill-count.bump {
+  animation: countBump 0.45s var(--spring);
 }
 
-.count-num {
-padding: 8px 15px;
-font-size: 13px; font-weight: 800;
-color: #fff;
-background: var(–blue);
-letter-spacing: -0.2px;
-min-width: 40px;
-text-align: center;
-box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+@keyframes countBump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.55) translateY(-2px); }
+  100% { transform: scale(1); }
 }
 
-.count-num.pop {
-animation: numPop .32s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes numPop {
-0%   { transform: scale(1); }
-45%  { transform: scale(1.3); }
-100% { transform: scale(1); }
-}
-
-/* Divider */
-.divider {
-width: 100%; height: 1px;
-margin-top: 18px;
-background: linear-gradient(90deg, transparent, var(–border-hi) 30%, var(–border-hi) 70%, transparent);
+/* ── CARDS AREA ── */
+#cards-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 16px;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
-/* ══════════════════════════════
-SCROLL BODY
-══════════════════════════════ */
-.scroll-body {
-flex: 1;
-padding: 14px 14px 130px;
-display: flex; flex-direction: column; gap: 12px;
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  animation: cardIn 0.4s var(--spring) both;
 }
 
-/* ══════════════════════════════
-CARD
-══════════════════════════════ */
-.comparison-item {
-background: var(–card);
-border: 1px solid var(–border);
-border-radius: var(–r20);
-overflow: hidden;
-box-shadow:
-0 1px 0 rgba(255,255,255,0.055) inset,
-0 6px 28px rgba(0,0,0,0.38);
-transition: border-color .28s, box-shadow .28s;
-animation: cardIn .26s cubic-bezier(.4,0,.2,1) both;
-}
+.card:nth-child(1) { animation-delay: 0.04s; }
+.card:nth-child(2) { animation-delay: 0.10s; }
+.card:nth-child(3) { animation-delay: 0.16s; }
+
 @keyframes cardIn {
-from { opacity:0; transform:translateY(14px) scale(.97); }
-to   { opacity:1; transform:translateY(0) scale(1); }
-}
-.comparison-item:nth-child(1){ animation-delay:.04s }
-.comparison-item:nth-child(2){ animation-delay:.10s }
-.comparison-item:nth-child(3){ animation-delay:.16s }
-
-.comparison-item.best-value {
-border-color: var(–green-bdr);
-box-shadow:
-0 0 0 1px rgba(48,209,88,0.16),
-0 0 36px rgba(48,209,88,0.07),
-0 6px 28px rgba(0,0,0,0.38),
-0 1px 0 rgba(255,255,255,0.055) inset;
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.card-head {
-display: flex; align-items: center; justify-content: space-between;
-padding: 11px 16px 10px;
-background: rgba(255,255,255,0.02);
-border-bottom: 1px solid var(–sep);
+.card.winner {
+  border-color: rgba(48,209,88,0.5);
+  box-shadow: 0 0 0 1px rgba(48,209,88,0.18), 0 8px 32px rgba(48,209,88,0.12);
 }
 
-.card-num {
-font-size: 10px; font-weight: 700;
-letter-spacing: 0.12em; text-transform: uppercase;
-color: var(–t3); transition: color .22s;
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.best-value .card-num { color: var(–green); }
 
-.best-tag {
-display: none; align-items: center; gap: 5px;
-background: var(–green-dim);
-border: 1px solid rgba(48,209,88,0.2);
-color: var(–green);
-font-size: 10px; font-weight: 700;
-letter-spacing: 0.06em; text-transform: uppercase;
-padding: 4px 11px; border-radius: 20px;
-animation: tagIn .26s cubic-bezier(.34,1.56,.64,1) both;
+.card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
 }
-@keyframes tagIn {
-from { opacity:0; transform:scale(.7); }
-to   { opacity:1; transform:scale(1); }
-}
-.best-value .best-tag { display: flex; }
 
+.badge-best {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(48,209,88,0.14);
+  border: 1px solid rgba(48,209,88,0.3);
+  border-radius: 100px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  opacity: 0;
+  transform: scale(0.7) translateX(6px);
+  transition: opacity 0.35s var(--spring), transform 0.35s var(--spring);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.badge-best.visible {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+.badge-best svg {
+  width: 11px; height: 11px;
+  fill: var(--green);
+}
+
+/* Card Body — 3 columns */
 .card-body {
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
 }
 
-.cell {
-padding: 12px 11px 14px;
-display: flex; flex-direction: column; gap: 8px;
-border-right: 1px solid var(–sep);
-}
-.cell:last-child { border-right: none; }
-
-.cell-label {
-font-size: 9.5px; font-weight: 700;
-letter-spacing: 0.1em; text-transform: uppercase;
-color: var(–t3);
+.col {
+  padding: 16px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.inp {
-background: var(–input-bg);
-border: 1.5px solid rgba(255,255,255,0.09);
-border-radius: var(–r10);
-padding: 11px 6px;
-font-size: 16px; font-weight: 600;
-font-family: ‘Sora’, sans-serif;
-color: var(–t1);
-text-align: center; width: 100%;
-transition: border-color .15s, box-shadow .15s, background .15s;
--webkit-appearance: none;
-caret-color: var(–blue);
-}
-.inp::placeholder { color: var(–t3); font-weight: 400; }
-.inp:focus {
-outline: none;
-border-color: rgba(10,132,255,0.55);
-background: rgba(10,132,255,0.07);
-box-shadow: 0 0 0 3px rgba(10,132,255,0.12);
-}
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-
-.cell-result {
-background: rgba(0,0,0,0.22);
-align-items: center; justify-content: center;
+.col + .col {
+  border-left: 1px solid rgba(255,255,255,0.06);
 }
 
+.col.result-col {
+  background: var(--result-bg);
+}
+
+.col-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* Inputs */
+.col input {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+}
+
+.col input::-webkit-outer-spin-button,
+.col input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.col input::placeholder { color: var(--text-tertiary); font-weight: 400; }
+
+.col input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(10,132,255,0.18);
+}
+
+/* Result box */
 .result-box {
-width: 100%;
-background: rgba(255,255,255,0.035);
-border: 1.5px solid rgba(255,255,255,0.07);
-border-radius: var(–r10);
-padding: 11px 4px;
-text-align: center;
-transition: background .25s, border-color .25s, box-shadow .25s;
-}
-.best-value .result-box {
-background: var(–green-dim);
-border-color: rgba(48,209,88,0.22);
-box-shadow: 0 0 14px rgba(48,209,88,0.1);
-}
-
-.result-num {
-font-size: 15px; font-weight: 700;
-color: var(–t3);
-letter-spacing: -0.2px;
-font-variant-numeric: tabular-nums;
-line-height: 1;
-transition: color .25s, transform .25s cubic-bezier(.34,1.56,.64,1);
-display: block;
-}
-.result-num.has-val { color: var(–t2); }
-.best-value .result-num {
-color: var(–green);
-transform: scale(1.1);
-text-shadow: 0 0 16px var(–green-glow);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.35s var(--spring);
+  letter-spacing: -0.01em;
 }
 
-/* ══════════════════════════════
-BOTTOM BAR
-══════════════════════════════ */
+.result-box.winner-result {
+  color: var(--green);
+  border-color: rgba(48,209,88,0.35);
+  box-shadow: 0 0 12px rgba(48,209,88,0.15);
+  transform: scale(1.06);
+  text-shadow: 0 0 16px rgba(48,209,88,0.5);
+}
+
+/* ── BOTTOM BAR ── */
 .bottom-bar {
-position: fixed; bottom: 0;
-left: 50%; transform: translateX(-50%);
-width: 100%; max-width: 430px;
-z-index: 99;
-padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
-background: rgba(8,8,10,0.92);
-backdrop-filter: blur(32px) saturate(180%);
--webkit-backdrop-filter: blur(32px) saturate(180%);
-border-top: 1px solid var(–border);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
-.btn-row {
-display: grid; grid-template-columns: 1fr 1.7fr; gap: 10px;
+/* Workaround: fixed bottom bar full-width then inner constrained */
+.bottom-bar-outer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.bottom-bar-inner {
+  display: flex;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
 }
 
 .btn {
-border: none; border-radius: var(–r14);
-padding: 15px 14px;
-font-size: 15px; font-weight: 700;
-font-family: ‘Sora’, sans-serif;
-cursor: pointer;
-display: flex; align-items: center; justify-content: center; gap: 7px;
-letter-spacing: -0.1px;
-transition: all .14s ease;
+  flex: 1;
+  border: none;
+  border-radius: 14px;
+  padding: 15px 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.18s var(--spring), opacity 0.18s;
+  -webkit-tap-highlight-color: transparent;
 }
-.btn:active { transform: scale(0.96); }
-.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-.btn-clear {
-background: var(–red-dim);
-color: var(–red);
-border: 1px solid rgba(255,69,58,0.2);
-}
-.btn-clear:hover { background: rgba(255,69,58,0.18); }
+.btn:active { transform: scale(0.95); }
 
 .btn-add {
-background: var(–blue);
-color: #fff;
-box-shadow: 0 4px 20px var(–blue-glow), inset 0 1px 0 rgba(255,255,255,0.18);
+  background: var(--blue);
+  color: #fff;
 }
-.btn-add:hover { background: #1a8fff; }
-</style>
 
+.btn-add:hover { opacity: 0.88; }
+
+.btn-clear {
+  background: rgba(255,69,58,0.14);
+  border: 1px solid rgba(255,69,58,0.28);
+  color: var(--red);
+  flex: 0 0 auto;
+  padding: 15px 18px;
+}
+
+.btn-clear:hover { background: rgba(255,69,58,0.22); }
+
+.btn svg {
+  width: 17px; height: 17px;
+  flex-shrink: 0;
+}
+
+/* Scroll anchor */
+.scroll-anchor { height: 1px; }
+```
+
+  </style>
 </head>
 <body>
-<div class="app">
 
-  <div class="header">
+  <header>
+    <div class="header-logo-row">
+      <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'" />
+      <h1 class="header-title">Comparador de Preços</h1>
+    </div>
+    <p class="header-subtitle">Melhor custo por unidade</p>
+    <div class="pill-counter" id="pill">
+      Comparando
+      <span class="pill-count" id="pill-count">3</span>
+      itens
+    </div>
+  </header>
 
-```
-<!-- BLOCO 1: logo + título na mesma linha, centralizados -->
-<div class="title-row">
-  <img class="brand-logo" src="logo.jpg" alt="Logo">
-  <span class="header-title">Comparador<br>de Preços</span>
-</div>
+  <div id="cards-container"></div>
+  <div class="scroll-anchor" id="scroll-anchor"></div>
 
-<!-- BLOCO 2: subtítulo independente, centralizado abaixo -->
-<div class="header-sub">Melhor custo por unidade</div>
-
-<!-- BLOCO 3: contagem de itens -->
-<div class="count-strip">
-  <span class="count-segment">Comparando</span>
-  <span class="count-num" id="count-num">3</span>
-  <span class="count-segment" id="count-label">itens</span>
-</div>
-
-<div class="divider"></div>
-```
-
-  </div>
-
-  <div class="scroll-body" id="comparisons"></div>
-
-  <div class="bottom-bar">
-    <div class="btn-row">
-      <button class="btn btn-clear" id="btn-clear">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="3 6 5 6 21 6"/>
-          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-          <path d="M9 6V4h6v2"/>
+  <div class="bottom-bar-outer">
+    <div class="bottom-bar-inner">
+      <button class="btn btn-add" id="btn-add" onclick="addCard()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Adicionar item
+      </button>
+      <button class="btn btn-clear" id="btn-clear" onclick="clearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
         </svg>
         Limpar
-      </button>
-      <button class="btn btn-add" id="btn-add">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5"  y1="12" x2="19" y2="12"/>
-        </svg>
-        Adicionar Item
       </button>
     </div>
   </div>
 
-</div>
-
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const wrap     = document.getElementById('comparisons');
-  const addBtn   = document.getElementById('btn-add');
-  const clrBtn   = document.getElementById('btn-clear');
-  const countNum = document.getElementById('count-num');
-  const countLbl = document.getElementById('count-label');
-  let n = 0;
+  let cardCount = 0;
 
-  function refreshCount() {
-    const c = wrap.querySelectorAll('.comparison-item').length;
-    countNum.textContent = c;
-    countLbl.textContent = c === 1 ? 'item' : 'itens';
-    countNum.classList.remove('pop');
-    void countNum.offsetWidth;
-    countNum.classList.add('pop');
+  function formatPrice(raw) {
+    // Remove tudo exceto dígitos
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) return '';
+    const num = parseInt(digits, 10);
+    return (num / 100).toFixed(2).replace('.', ',');
   }
 
-  function addItem() {
-    n++;
-    const el = document.createElement('div');
-    el.className = 'comparison-item';
-    if (n > 3) el.style.animationDelay = '0s';
-    el.innerHTML = `
-      <div class="card-head">
-        <span class="card-num">Opção ${n}</span>
-        <span class="best-tag">★ Melhor Preço</span>
+  function parsePrice(formatted) {
+    if (!formatted) return NaN;
+    return parseFloat(formatted.replace(',', '.'));
+  }
+
+  function createCard() {
+    cardCount++;
+    const idx = cardCount;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `card-${idx}`;
+    card.dataset.idx = idx;
+
+    card.innerHTML = `
+      <div class="card-header">
+        <span class="card-label">Opção ${idx}</span>
+        <span class="badge-best" id="badge-${idx}">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Melhor Preço
+        </span>
       </div>
       <div class="card-body">
-        <div class="cell">
-          <span class="cell-label">Qtd / ml / g</span>
-          <input class="inp qty" type="number" placeholder="0" min="0" step="any" inputmode="decimal">
+        <div class="col">
+          <span class="col-label">Qtd / ml / g</span>
+          <input type="number" id="qty-${idx}" placeholder="ex: 500" inputmode="decimal"
+            oninput="calc(${idx})" />
         </div>
-        <div class="cell">
-          <span class="cell-label">Valor R$</span>
-          <input class="inp prc" type="text" placeholder="0,00" inputmode="decimal">
+        <div class="col">
+          <span class="col-label">Valor R$</span>
+          <input type="text" id="price-${idx}" placeholder="ex: 9,99" inputmode="numeric"
+            oninput="onPriceInput(this, ${idx})" />
         </div>
-        <div class="cell cell-result">
-          <span class="cell-label">R$ / Und</span>
-          <div class="result-box">
-            <span class="result-num">—</span>
-          </div>
+        <div class="col result-col">
+          <span class="col-label">R$ / Und</span>
+          <div class="result-box" id="result-${idx}">—</div>
         </div>
-      </div>`;
+      </div>
+    `;
+    return card;
+  }
 
-    wrap.appendChild(el);
-    refreshCount();
-    if (n > 3) setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'nearest' }), 60);
+  function onPriceInput(el, idx) {
+    const raw = el.value;
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) { el.value = ''; calc(idx); return; }
+    const num = parseInt(digits, 10);
+    el.value = (num / 100).toFixed(2).replace('.', ',');
+    calc(idx);
+  }
 
-    el.querySelector('.qty').addEventListener('input', recalc);
-    el.querySelector('.prc').addEventListener('input', e => {
-      const digits = e.target.value.replace(/\D/g, '');
-      e.target.value = ((parseInt(digits) || 0) / 100).toFixed(2);
-      recalc();
+  function calc(idx) {
+    const qtyEl = document.getElementById(`qty-${idx}`);
+    const priceEl = document.getElementById(`price-${idx}`);
+    const resultEl = document.getElementById(`result-${idx}`);
+
+    const qty = parseFloat(qtyEl.value);
+    const price = parsePrice(priceEl.value);
+
+    if (!isNaN(qty) && qty > 0 && !isNaN(price) && price > 0) {
+      const ratio = price / qty;
+      resultEl.dataset.value = ratio;
+      resultEl.textContent = ratio.toFixed(4).replace('.', ',');
+    } else {
+      resultEl.dataset.value = '';
+      resultEl.textContent = '—';
+    }
+    highlight();
+  }
+
+  function highlight() {
+    const cards = document.querySelectorAll('.card');
+    let minVal = Infinity;
+    let winnerId = null;
+
+    cards.forEach(card => {
+      const idx = card.dataset.idx;
+      const resultEl = document.getElementById(`result-${idx}`);
+      const val = parseFloat(resultEl.dataset.value);
+      if (!isNaN(val) && val < minVal) {
+        minVal = val;
+        winnerId = idx;
+      }
     });
-    el.querySelector('.prc').addEventListener('focus', e => {
-      requestAnimationFrame(() => e.target.select());
+
+    cards.forEach(card => {
+      const idx = card.dataset.idx;
+      const resultEl = document.getElementById(`result-${idx}`);
+      const badge = document.getElementById(`badge-${idx}`);
+      const isWinner = idx == winnerId && resultEl.dataset.value !== '';
+
+      card.classList.toggle('winner', isWinner);
+      badge.classList.toggle('visible', isWinner);
+      resultEl.classList.toggle('winner-result', isWinner);
     });
   }
 
-  function recalc() {
-    const items = wrap.querySelectorAll('.comparison-item');
-    let valid = [];
-    items.forEach(item => {
-      const q = parseFloat(item.querySelector('.qty').value) || 0;
-      const p = parseFloat(item.querySelector('.prc').value) || 0;
-      const num = item.querySelector('.result-num');
-      item.classList.remove('best-value');
-      if (q > 0 && p > 0) {
-        const u = p / q;
-        num.textContent = u.toFixed(4);
-        num.classList.add('has-val');
-        valid.push({ item, u });
-      } else {
-        num.textContent = '—';
-        num.classList.remove('has-val');
-      }
-    });
-    if (valid.length > 0) {
-      valid.sort((a, b) => a.u - b.u);
-      valid[0].item.classList.add('best-value');
-    }
+  function addCard() {
+    const container = document.getElementById('cards-container');
+    const card = createCard();
+    container.appendChild(card);
+    updatePill();
+
+    // Scroll to new card
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 80);
   }
 
   function clearAll() {
-    wrap.querySelectorAll('.inp').forEach(el => {
-      el.value = el.classList.contains('prc') ? '0.00' : '';
+    document.querySelectorAll('.card').forEach(card => {
+      const idx = card.dataset.idx;
+      const qtyEl = document.getElementById(`qty-${idx}`);
+      const priceEl = document.getElementById(`price-${idx}`);
+      const resultEl = document.getElementById(`result-${idx}`);
+      const badge = document.getElementById(`badge-${idx}`);
+
+      if (qtyEl) qtyEl.value = '';
+      if (priceEl) priceEl.value = '';
+      if (resultEl) { resultEl.textContent = '—'; resultEl.dataset.value = ''; }
+      if (badge) badge.classList.remove('visible');
+      card.classList.remove('winner');
+      if (resultEl) resultEl.classList.remove('winner-result');
     });
-    wrap.querySelectorAll('.result-num').forEach(el => {
-      el.textContent = '—'; el.classList.remove('has-val');
-    });
-    wrap.querySelectorAll('.comparison-item').forEach(el => el.classList.remove('best-value'));
   }
 
-  addBtn.addEventListener('click', addItem);
-  clrBtn.addEventListener('click', clearAll);
-  addItem(); addItem(); addItem();
-});
+  function updatePill() {
+    const count = document.querySelectorAll('.card').length;
+    const el = document.getElementById('pill-count');
+    el.textContent = count;
+    el.classList.remove('bump');
+    void el.offsetWidth; // reflow
+    el.classList.add('bump');
+  }
+
+  // Init with 3 cards
+  (function init() {
+    for (let i = 0; i < 3; i++) {
+      const container = document.getElementById('cards-container');
+      container.appendChild(createCard());
+    }
+    // pill already shows 3 by default; no bump on init
+    document.getElementById('pill-count').textContent = '3';
+  })();
 </script>
 
 </body>
