@@ -4,325 +4,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Comparador de Precos</title>
+<title>Comparador de Prec&#807;os</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
-html { background:#000; }
-
-body {
-font-family: “Sora”, -apple-system, sans-serif;
-background: #000;
-color: #f5f5f7;
-min-height: 100vh;
-display: flex;
-justify-content: center;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:#000}
+body{
+  font-family:"Sora",-apple-system,sans-serif;
+  background:#000;
+  color:#f5f5f7;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
 }
-
-.app {
-width: 100%;
-max-width: 430px;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-}
-
-.header {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 54px 24px 0;
-}
-
-.title-row {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 13px;
-width: 100%;
-}
-
-.brand-logo {
-width: 58px;
-height: 58px;
-border-radius: 14px;
-object-fit: cover;
-flex-shrink: 0;
-display: block;
-}
-
-.header-title {
-font-size: 30px;
-font-weight: 800;
-letter-spacing: -1px;
-line-height: 1.1;
-color: #f5f5f7;
-white-space: nowrap;
-}
-
-.header-sub {
-font-size: 13px;
-font-weight: 400;
-color: #aeaeb2;
-text-align: center;
-margin-top: 12px;
-}
-
-.count-strip {
-display: flex;
-align-items: center;
-background: rgba(255,255,255,0.05);
-border: 1px solid rgba(255,255,255,0.15);
-border-radius: 14px;
-overflow: hidden;
-margin-top: 16px;
-}
-
-.count-seg {
-padding: 8px 15px;
-font-size: 12px;
-font-weight: 600;
-color: #aeaeb2;
-white-space: nowrap;
-}
-
-.count-num {
-padding: 8px 15px;
-font-size: 13px;
-font-weight: 800;
-color: #fff;
-background: #0a84ff;
-min-width: 40px;
-text-align: center;
-}
-
-.count-num.pop {
-animation: numPop .32s cubic-bezier(.34,1.56,.64,1);
-}
-
-@keyframes numPop {
-0%   { transform: scale(1); }
-45%  { transform: scale(1.3); }
-100% { transform: scale(1); }
-}
-
-.divider {
-width: 100%;
-height: 1px;
-margin-top: 18px;
-background: rgba(255,255,255,0.1);
-}
-
-.scroll-body {
-flex: 1;
-padding: 14px 14px 130px;
-display: flex;
-flex-direction: column;
-gap: 12px;
-}
-
-.card {
-background: #1c1c1e;
-border: 1px solid rgba(255,255,255,0.09);
-border-radius: 20px;
-overflow: hidden;
-transition: border-color .28s, box-shadow .28s;
-animation: cardIn .3s ease both;
-}
-
-@keyframes cardIn {
-from { opacity:0; transform:translateY(12px); }
-to   { opacity:1; transform:translateY(0); }
-}
-
-.card.winner {
-border-color: rgba(48,209,88,0.5);
-box-shadow: 0 0 0 1px rgba(48,209,88,0.16), 0 0 30px rgba(48,209,88,0.08);
-}
-
-.card-head {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 11px 16px 10px;
-background: rgba(255,255,255,0.02);
-border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.card-lbl {
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: #48484a;
-transition: color .22s;
-}
-
-.card.winner .card-lbl { color: #30d158; }
-
-.badge {
-display: none;
-align-items: center;
-gap: 5px;
-background: rgba(48,209,88,0.11);
-border: 1px solid rgba(48,209,88,0.25);
-color: #30d158;
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 0.06em;
-text-transform: uppercase;
-padding: 4px 11px;
-border-radius: 20px;
-}
-
-.card.winner .badge { display: flex; }
-
-.card-body {
-display: flex;
-}
-
-.cell {
-flex: 1;
-padding: 12px 10px 14px;
-display: flex;
-flex-direction: column;
-gap: 8px;
-border-right: 1px solid rgba(255,255,255,0.06);
-min-width: 0;
-}
-
-.cell:last-child { border-right: none; }
-
-.cell-res { background: rgba(0,0,0,0.25); }
-
-.cell-lbl {
-font-size: 9px;
-font-weight: 700;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-color: #48484a;
-}
-
-.inp {
-background: #0a0a0a;
-border: 1.5px solid rgba(255,255,255,0.09);
-border-radius: 10px;
-padding: 10px 4px;
-font-size: 15px;
-font-weight: 600;
-font-family: “Sora”, -apple-system, sans-serif;
-color: #f5f5f7;
-text-align: center;
-width: 100%;
--webkit-appearance: none;
-appearance: none;
-transition: border-color .15s, box-shadow .15s;
-}
-
-.inp::-webkit-outer-spin-button,
-.inp::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
-.inp[type=number] { -moz-appearance: textfield; }
-
-.inp::placeholder { color: #48484a; font-weight: 400; }
-
-.inp:focus {
-outline: none;
-border-color: rgba(10,132,255,0.6);
-background: rgba(10,132,255,0.07);
-box-shadow: 0 0 0 3px rgba(10,132,255,0.12);
-}
-
-.result-box {
-width: 100%;
-background: rgba(255,255,255,0.04);
-border: 1.5px solid rgba(255,255,255,0.07);
-border-radius: 10px;
-padding: 10px 4px;
-text-align: center;
-transition: background .25s, border-color .25s, box-shadow .25s;
-}
-
-.card.winner .result-box {
-background: rgba(48,209,88,0.11);
-border-color: rgba(48,209,88,0.3);
-box-shadow: 0 0 14px rgba(48,209,88,0.1);
-}
-
-.result-val {
-font-size: 14px;
-font-weight: 700;
-color: #48484a;
-line-height: 1;
-display: block;
-transition: color .25s, transform .25s;
-}
-
-.result-val.has-val { color: #aeaeb2; }
-
-.card.winner .result-val {
-color: #30d158;
-transform: scale(1.1);
-text-shadow: 0 0 16px rgba(48,209,88,0.4);
-}
-
-.bottom-bar {
-position: fixed;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-width: 100%;
-max-width: 430px;
-z-index: 99;
-padding: 12px 14px 26px;
-background: rgba(8,8,10,0.93);
-backdrop-filter: blur(32px);
--webkit-backdrop-filter: blur(32px);
-border-top: 1px solid rgba(255,255,255,0.09);
-}
-
-.btn-row {
-display: flex;
-gap: 10px;
-}
-
-.btn {
-border: none;
-border-radius: 14px;
-padding: 15px 14px;
-font-size: 15px;
-font-weight: 700;
-font-family: “Sora”, -apple-system, sans-serif;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 7px;
-transition: opacity .14s;
-}
-
-.btn:active { opacity: 0.72; }
-.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-.btn-add {
-flex: 1;
-background: #0a84ff;
-color: #fff;
-}
-
-.btn-clear {
-background: rgba(255,69,58,0.13);
-color: #ff453a;
-border: 1px solid rgba(255,69,58,0.22);
-padding: 15px 20px;
-}
+.app{width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column}
+.header{display:flex;flex-direction:column;align-items:center;padding:54px 24px 0}
+.title-row{display:flex;align-items:center;justify-content:center;gap:13px;width:100%}
+.brand-logo{width:58px;height:58px;border-radius:14px;object-fit:cover;flex-shrink:0;display:block}
+.header-title{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.1;color:#f5f5f7;white-space:nowrap}
+.header-sub{font-size:13px;font-weight:400;color:#aeaeb2;text-align:center;margin-top:12px}
+.count-strip{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:14px;overflow:hidden;margin-top:16px}
+.count-seg{padding:8px 15px;font-size:12px;font-weight:600;color:#aeaeb2;white-space:nowrap}
+.count-num{padding:8px 15px;font-size:13px;font-weight:800;color:#fff;background:#0a84ff;min-width:40px;text-align:center}
+.count-num.pop{animation:numPop .32s cubic-bezier(.34,1.56,.64,1)}
+@keyframes numPop{0%{transform:scale(1)}45%{transform:scale(1.3)}100%{transform:scale(1)}}
+.divider{width:100%;height:1px;margin-top:18px;background:rgba(255,255,255,0.1)}
+.scroll-body{flex:1;padding:14px 14px 130px;display:flex;flex-direction:column;gap:12px}
+.card{background:#1c1c1e;border:1px solid rgba(255,255,255,0.09);border-radius:20px;overflow:hidden;transition:border-color .28s,box-shadow .28s;animation:cardIn .3s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card.winner{border-color:rgba(48,209,88,0.5);box-shadow:0 0 0 1px rgba(48,209,88,0.16),0 0 30px rgba(48,209,88,0.08)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px 10px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.06)}
+.card-lbl{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#48484a;transition:color .22s}
+.card.winner .card-lbl{color:#30d158}
+.badge{display:none;align-items:center;gap:5px;background:rgba(48,209,88,0.11);border:1px solid rgba(48,209,88,0.25);color:#30d158;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 11px;border-radius:20px}
+.card.winner .badge{display:flex}
+.card-body{display:flex}
+.cell{flex:1;padding:12px 10px 14px;display:flex;flex-direction:column;gap:8px;border-right:1px solid rgba(255,255,255,0.06);min-width:0}
+.cell:last-child{border-right:none}
+.cell-res{background:rgba(0,0,0,0.25)}
+.cell-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#48484a}
+.inp{background:#0a0a0a;border:1.5px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 4px;font-size:15px;font-weight:600;font-family:"Sora",-apple-system,sans-serif;color:#f5f5f7;text-align:center;width:100%;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.inp::-webkit-outer-spin-button,.inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.inp[type=number]{-moz-appearance:textfield}
+.inp::placeholder{color:#48484a;font-weight:400}
+.inp:focus{outline:none;border-color:rgba(10,132,255,0.6);background:rgba(10,132,255,0.07);box-shadow:0 0 0 3px rgba(10,132,255,0.12)}
+.result-box{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 4px;text-align:center;transition:background .25s,border-color .25s,box-shadow .25s}
+.card.winner .result-box{background:rgba(48,209,88,0.11);border-color:rgba(48,209,88,0.3);box-shadow:0 0 14px rgba(48,209,88,0.1)}
+.result-val{font-size:14px;font-weight:700;color:#48484a;line-height:1;display:block;transition:color .25s,transform .25s}
+.result-val.has-val{color:#aeaeb2}
+.card.winner .result-val{color:#30d158;transform:scale(1.1);text-shadow:0 0 16px rgba(48,209,88,0.4)}
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:99;padding:12px 14px 26px;background:rgba(8,8,10,0.93);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:1px solid rgba(255,255,255,0.09)}
+.btn-row{display:flex;gap:10px}
+.btn{border:none;border-radius:14px;padding:15px 14px;font-size:15px;font-weight:700;font-family:"Sora",-apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .14s}
+.btn:active{opacity:0.72}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn-add{flex:1;background:#0a84ff;color:#fff}
+.btn-clear{background:rgba(255,69,58,0.13);color:#ff453a;border:1px solid rgba(255,69,58,0.22);padding:15px 20px}
 </style>
-
 </head>
 <body>
 <div class="app">
-
   <div class="header">
     <div class="title-row">
       <img class="brand-logo" src="logo.jpg" alt="Logo">
@@ -336,38 +77,33 @@ padding: 15px 20px;
     </div>
     <div class="divider"></div>
   </div>
-
   <div class="scroll-body" id="cards"></div>
-
   <div class="bottom-bar">
     <div class="btn-row">
       <button class="btn btn-add" id="btnAdd">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         Adicionar item
       </button>
       <button class="btn btn-clear" id="btnClear">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-          <path d="M9 6V4h6v2"></path>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M9 6V4h6v2"></path></svg>
         Limpar
       </button>
     </div>
   </div>
-
 </div>
 <script>
-(function() {
-  var wrap   = document.getElementById("cards");
-  var cNum   = document.getElementById("cNum");
-  var cLbl   = document.getElementById("cLbl");
-  var btnAdd = document.getElementById("btnAdd");
-  var btnClr = document.getElementById("btnClear");
-  var total  = 0;
+(function(){
+  var DASH  = String.fromCharCode(8212);
+  var STAR  = String.fromCharCode(9733);
+  var OPCAO = "Op" + String.fromCharCode(231) + String.fromCharCode(227) + "o";
+  var PRECO = "Pre" + String.fromCharCode(231) + "o";
+
+var wrap   = document.getElementById(“cards”);
+var cNum   = document.getElementById(“cNum”);
+var cLbl   = document.getElementById(“cLbl”);
+var btnAdd = document.getElementById(“btnAdd”);
+var btnClr = document.getElementById(“btnClear”);
+var total  = 0;
 
 function mk(tag, cls) {
 var e = document.createElement(tag);
@@ -386,14 +122,13 @@ cNum.classList.add(“pop”);
 
 function recalc() {
 var all = wrap.getElementsByClassName(“card”);
-var best = null;
-var bestU = Infinity;
+var best = null, bestU = Infinity;
 var i, card, q, p, u, rv;
 for (i = 0; i < all.length; i++) {
 card = all[i];
 q = parseFloat(card.getElementsByClassName(“iq”)[0].value) || 0;
 p = parseFloat(card.getElementsByClassName(“ip”)[0].value) || 0;
-rv = card.getElementsByClassName(“result-val”)[0];
+rv = card.getElementsByClassName(“rv”)[0];
 card.classList.remove(“winner”);
 if (q > 0 && p > 0) {
 u = p / q;
@@ -401,7 +136,7 @@ rv.textContent = u.toFixed(4);
 rv.classList.add(“has-val”);
 if (u < bestU) { bestU = u; best = card; }
 } else {
-rv.textContent = “—”;
+rv.textContent = DASH;
 rv.classList.remove(“has-val”);
 }
 }
@@ -410,17 +145,16 @@ if (best) best.classList.add(“winner”);
 
 function addCard() {
 total++;
-var card = mk(“div”, “card”);
-
-```
-var head = mk("div", "card-head");
-var lbl  = mk("span", "card-lbl");
-lbl.textContent = "Opção " + total;
-var badge = mk("span", "badge");
-badge.textContent = "★ Melhor Preço";
+var card  = mk(“div”, “card”);
+var head  = mk(“div”, “card-head”);
+var lbl   = mk(“span”, “card-lbl”);
+lbl.textContent = OPCAO + “ “ + total;
+var badge = mk(“span”, “badge”);
+badge.textContent = STAR + “ Melhor “ + PRECO;
 head.appendChild(lbl);
 head.appendChild(badge);
 
+```
 var body = mk("div", "card-body");
 
 var c1 = mk("div", "cell");
@@ -449,11 +183,11 @@ i2.setAttribute("inputmode", "decimal");
 }(i2));
 c2.appendChild(l2); c2.appendChild(i2);
 
-var c3 = mk("div", "cell cell-res");
-var l3 = mk("span", "cell-lbl"); l3.textContent = "R$ / Und";
+var c3  = mk("div", "cell cell-res");
+var l3  = mk("span", "cell-lbl"); l3.textContent = "R$ / Und";
 var box = mk("div", "result-box");
-var rv  = mk("span", "result-val");
-rv.textContent = "—";
+var rv  = mk("span", "result-val rv");
+rv.textContent = DASH;
 box.appendChild(rv);
 c3.appendChild(l3); c3.appendChild(box);
 
@@ -473,13 +207,13 @@ if (total > 3) {
 
 function clearAll() {
 var inp = wrap.getElementsByClassName(“inp”);
-var rv  = wrap.getElementsByClassName(“result-val”);
+var rvs = wrap.getElementsByClassName(“rv”);
 var all = wrap.getElementsByClassName(“card”);
 var i;
 for (i = 0; i < inp.length; i++) inp[i].value = “”;
-for (i = 0; i < rv.length; i++) {
-rv[i].textContent = “—”;
-rv[i].classList.remove(“has-val”);
+for (i = 0; i < rvs.length; i++) {
+rvs[i].textContent = DASH;
+rvs[i].classList.remove(“has-val”);
 }
 for (i = 0; i < all.length; i++) all[i].classList.remove(“winner”);
 }
